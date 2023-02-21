@@ -23,6 +23,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
   document.querySelector('#btnLearn').addEventListener('click', (event) => {
     location.href = 'https://frontendmasters.com'
   })
+
+  document.querySelector('#btnShare').addEventListener('click', (e) => {
+    let notesString = ''
+    for (let note of notes) {
+      notesString += note + ' | '
+    }
+    navigator.share({
+      title: 'Codepad',
+      text: notesString,
+    })
+  })
+  let bipEvent = null
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault()
+    bipEvent = e
+  })
+  document.querySelector('#btnInstall').addEventListener('click', (e) => {
+    if (bipEvent) {
+      bipEvent.prompt()
+    } else {
+      // incompatible browser, your PWA is not passing the criteria, the user has already installed the pwa
+      // TODO: show the user information on how to install the app
+      alert(
+        "To install the app look for Add to Homescreen or install in your browser's menu"
+      )
+    }
+  })
 })
 
 // Render the notes on the DOM
